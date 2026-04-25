@@ -1,0 +1,30 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: HackerNews.Api/Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ConnectionStrings__Redis=redis:6379
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis_data:

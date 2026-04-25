@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="HackerNews.Api/HackerNews.Api.csproj" />
+  <Project Path="HackerNews.Tests/HackerNews.Tests.csproj" />
+</Solution>
